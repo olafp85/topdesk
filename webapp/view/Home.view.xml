@@ -1,0 +1,92 @@
+<mvc:View
+    controllerName="topdesk.controller.Home"
+    xmlns:mvc="sap.ui.core.mvc"
+    xmlns="sap.m"
+    xmlns:core="sap.ui.core"
+    core:require="{ formatMessage: 'sap/base/strings/formatMessage', library: 'sap/m/library' }"
+>
+    <Page
+        id="page"
+        title="{i18n>title}"
+        showHeader="false"
+    >
+        <content>
+            <Table
+                id="table"
+                items="{
+		        	path: 'tickets>/',
+		        	sorter: { path: 'briefDescription' }
+	        	}"
+                busyIndicatorDelay="0"
+            >
+                <headerToolbar>
+                    <OverflowToolbar>
+                        <Title
+                            text="{
+                                parts: [
+                                    'i18n>tickets',
+                                    'view>/count'
+                                ],
+                                formatter: 'formatMessage'
+                            }"
+                        />
+                        <ToolbarSpacer />
+                        <SearchField liveChange="onSearch">
+                            <layoutData>
+                                <OverflowToolbarLayoutData
+                                    maxWidth="15rem"
+                                    shrinkable="true"
+                                    priority="NeverOverflow"
+                                />
+                            </layoutData>
+                        </SearchField>
+                    </OverflowToolbar>
+                </headerToolbar>
+
+                <columns>
+                    <Column width="8em">
+                        <Text text="{i18n>number}" />
+                    </Column>
+                    <Column>
+                        <Text text="{i18n>description}" />
+                    </Column>
+                    <Column width="10em">
+                        <Text text="{i18n>operator}" />
+                    </Column>
+                    <Column width="15em">
+                        <Text text="{i18n>processingStatus}" />
+                    </Column>
+                    <Column width="15em">
+                        <Text text="{i18n>processingStatusLMN}" />
+                    </Column>
+                    <Column
+                        width="15em"
+                        visible="false"
+                    >
+                        <Text text="test" />
+                    </Column>
+                </columns>
+
+                <items>
+                    <ColumnListItem>
+                        <cells>
+                            <Link
+                                text="{tickets>number}"
+                                href="{= 'https://acorel.topdesk.net/tas/secure/contained/incident?unid=' + ${tickets>id}}"
+                            />
+                            <Text text="{tickets>description}" />
+                            <Text text="{tickets>operator/name}" />
+                            <Text text="{tickets>processingStatus/name}" />
+                            <Link
+                                text="{tickets>lmn/status}"
+                                tooltip="{tickets>lmn/operator}"
+                                href="{tickets>lmn/url}"
+                            />
+                            <Text text="{tickets>lmn/description}" />
+                        </cells>
+                    </ColumnListItem>
+                </items>
+            </Table>
+        </content>
+    </Page>
+</mvc:View>
