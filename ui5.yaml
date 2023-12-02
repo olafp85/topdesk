@@ -1,0 +1,39 @@
+# https://www.npmjs.com/package/@sap/ux-ui5-tooling
+# yaml-language-server: $schema=https://sap.github.io/ui5-tooling/schema/ui5.yaml.json
+
+specVersion: "2.6"
+metadata:
+  name: topdesk
+type: application
+server:
+  customMiddleware:
+    - name: fiori-tools-proxy
+      afterMiddleware: compression
+      configuration:
+        ignoreCertError: false # If set to true, certificate errors will be ignored. E.g. self-signed certificates will be accepted
+        ui5:
+          path:
+            - /resources
+            - /test-resources
+          url: https://ui5.sap.com
+          directLoad: true
+        backend:
+         - path: /acorel
+           pathPrefix: /tas/api
+           url: https://acorel.topdesk.net
+           auth: user:password
+         - path: /lmn
+           pathPrefix: /tas/api
+           url: https://lmn.topdesk.net
+           auth: user:password
+    - name: fiori-tools-appreload
+      afterMiddleware: compression
+      configuration:
+        port: 35729
+        path: webapp
+        delay: 300
+    - name: fiori-tools-preview
+      afterMiddleware: fiori-tools-appreload
+      configuration:
+        component: topdesk
+        ui5Theme: sap_horizon
